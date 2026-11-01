@@ -1,0 +1,8 @@
+{
+  "name": "projectflow-api",
+  "version": "0.1.0",
+  "description": "Dummy in-memory API for the ProjectFlow UI prototype",
+  "main": "server.js",
+  "scripts": { "start": "node server.js", "dev": "node --watch server.js" },
+  "dependencies": { "cors": "^2.8.5", "express": "^4.21.2" }
+}
