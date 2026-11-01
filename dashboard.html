@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>ProjectFlow</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+    <script src="assets/app.js"></script>
+</head>
+
+<body data-page="dashboard" data-title="Dashboard">
+    <main id="page" class="grid gap-6 p-6 lg:p-8">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+            <div>
+                <h2 class="text-2xl font-semibold">Good morning, Alex</h2>
+                <p class="text-slate-500">3 tasks are due this week across 4 active projects.</p>
+            </div><a href="board.html"
+                class="flex items-center gap-2 rounded-lg bg-primary-500 px-4 py-2 font-semibold text-white hover:bg-primary-600">New
+                task</a>
+        </div>
+        <div id="stats" class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4"></div>
+        <div class="grid gap-6 xl:grid-cols-3">
+            <section class="rounded-3xl border border-slate-100 bg-white p-6 shadow-sm">
+                <h3 class="font-semibold">Tasks per status</h3>
+                <div class="mt-5 flex items-center gap-6">
+                    <div class="h-36 w-36 shrink-0 rounded-full"
+                        style="background:conic-gradient(#64748b 0 20%,#0d9488 20% 52%,#7c3aed 52% 70%,#16a34a 70% 100%)">
+                        <div class="m-8 flex h-20 w-20 flex-col items-center justify-center rounded-full bg-white"><b
+                                class="text-xl">50</b><span class="text-xs text-slate-500">tasks</span></div>
+                    </div>
+                    <ul class="grid gap-2 text-sm" id="leg"></ul>
+                </div>
+            </section>
+            <section class="rounded-3xl border border-slate-100 bg-white p-6 shadow-sm">
+                <h3 class="font-semibold">Team productivity <span class="font-normal text-slate-500">(tasks done this
+                        week)</span></h3>
+                <div id="bars" class="mt-5 flex h-36 items-end gap-4"></div>
+            </section>
+            <section class="rounded-3xl border border-slate-100 bg-white p-6 shadow-sm">
+                <h3 class="font-semibold">Activity</h3>
+                <ul id="feed" class="mt-4 grid gap-3 text-sm"></ul>
+            </section>
+        </div>
+        <section class="overflow-x-auto rounded-3xl border border-slate-100 bg-white p-6 shadow-sm">
+            <div class="mb-4 flex justify-between">
+                <h3 class="font-semibold">Due soon</h3><a href="board.html"
+                    class="text-sm text-primary-500 hover:underline">Open board</a>
+            </div>
+            <table class="w-full min-w-[640px] text-left text-sm">
+                <thead class="text-slate-500">
+                    <tr>
+                        <th class="pb-3 font-medium">Task</th>
+                        <th class="font-medium">Project</th>
+                        <th class="font-medium">Status</th>
+                        <th class="font-medium">Priority</th>
+                        <th class="font-medium">Due</th>
+                        <th class="font-medium">Assignee</th>
+                    </tr>
+                </thead>
+                <tbody id="rows" class="divide-y divide-zinc-100"></tbody>
+            </table>
+        </section>
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                [['Active projects', 4, '#2563eb'], ['Open tasks', 32, '#0d9488'], ['Completed tasks', 18, '#16a34a'], ['Overdue tasks', 3, '#dc2626']].forEach(([l, v, c]) => stats.insertAdjacentHTML('beforeend', '<div class="rounded-3xl border border-slate-100 bg-white p-5 shadow-sm"><p class="text-sm text-slate-500">' + l + '</p><p class="mt-2 text-3xl font-semibold" style="color:' + c + '">' + v + '</p></div>'));
+                [['Todo', 10], ['In Progress', 16], ['Review', 9], ['Done', 15]].forEach(([l, v]) => leg.insertAdjacentHTML('beforeend', '<li class="flex items-center gap-2"><i class="h-3 w-3 rounded-full" style="background:' + ST[l] + '"></i>' + l + ' <b class="ml-auto pl-4">' + v + '</b></li>'));
+                [['Sarah', 9], ['John', 6], ['Alex', 7], ['Mia', 4]].forEach(([n, v]) => bars.insertAdjacentHTML('beforeend', '<div class="flex flex-1 flex-col items-center gap-2"><div class="w-full rounded-t-lg bg-primary-500" style="height:' + v * 13 + 'px"></div><span class="text-xs text-slate-500">' + n + '</span></div>'));
+                ['Alex created project <b>Website redesign</b>|2 min ago', 'Sarah completed <b>Task #245</b>|1 h ago', 'John uploaded an attachment|3 h ago', 'Mia commented on <b>Pricing page</b>|Yesterday'].forEach(a => { const [t, w] = a.split('|'); feed.insertAdjacentHTML('beforeend', '<li><p>' + t + '</p><p class="text-xs text-slate-400">' + w + '</p></li>') });
+                [['Design homepage', 'Website redesign', 'In Progress', 'High', 'Nov 4', 'Sarah Lee'], ['Set up CI pipeline', 'Mobile app', 'Review', 'Critical', 'Nov 5', 'John Doe'], ['Write onboarding emails', 'Launch campaign', 'Todo', 'Medium', 'Nov 7', 'Mia Chen'], ['Fix invoice rounding', 'Billing', 'In Progress', 'High', 'Nov 8', 'Alex Balakirev']].forEach(r => rows.insertAdjacentHTML('beforeend', '<tr class="hover:bg-zinc-50"><td class="py-3 font-medium">' + r[0] + '</td><td class="text-slate-500">' + r[1] + '</td><td>' + chip(r[2], ST[r[2]]) + '</td><td>' + chip(r[3], PR[r[3]]) + '</td><td>' + r[4] + '</td><td>' + av(r[5], 8) + '</td></tr>'));
+            });
+        </script>
+    </main>
+</body>
+
+</html>

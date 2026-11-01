@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>ProjectFlow</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+    <script src="assets/app.js"></script>
+</head>
+
+<body data-page="team" data-title="Team">
+    <main id="page" class="p-6 lg:p-8">
+        <div class="mb-6 flex items-center justify-between">
+            <p class="text-slate-500">5 of 5 seats used on the Free plan.</p><button onclick="m.showModal()"
+                class="rounded-lg bg-primary-500 px-4 py-2 font-semibold text-white hover:bg-primary-600">Invite
+                member</button>
+        </div>
+        <section class="overflow-x-auto rounded-3xl border border-slate-100 bg-white p-6 shadow-sm">
+            <table class="w-full min-w-[560px] text-left text-sm">
+                <thead class="text-slate-500">
+                    <tr>
+                        <th class="pb-3 font-medium">Member</th>
+                        <th class="font-medium">Role</th>
+                        <th class="font-medium">Open tasks</th>
+                        <th class="font-medium">Status</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="rows" class="divide-y divide-zinc-100"></tbody>
+            </table>
+        </section>
+        <dialog id="m" class="w-full max-w-md rounded-3xl p-6 backdrop:bg-black/40">
+            <form method="dialog" class="grid gap-4">
+                <h3 class="text-xl font-semibold">Invite member</h3>
+                <label class="text-sm font-medium">Email<input type="email"
+                        class="mt-2 h-11 w-full rounded-lg border border-[#e8e8ec] bg-[#f5f5f7] px-4 focus:border-primary-500 focus:outline-none"
+                        placeholder="name@company.com"></label>
+                <label class="text-sm font-medium">Role<select
+                        class="mt-2 h-11 w-full rounded-lg border border-[#e8e8ec] bg-[#f5f5f7] px-3">
+                        <option>Member</option>
+                        <option>Manager</option>
+                        <option>Admin</option>
+                    </select></label>
+                <div class="flex justify-end gap-2"><button
+                        class="rounded-lg bg-gray-200 px-4 py-2 font-semibold">Cancel</button><button
+                        class="rounded-lg bg-primary-500 px-4 py-2 font-semibold text-white">Send invitation</button>
+                </div>
+            </form>
+        </dialog>
+        <script>
+            const RC = { Owner: '#7c3aed', Admin: '#2563eb', Manager: '#0d9488', Member: '#64748b' };
+            document.addEventListener('DOMContentLoaded', () => [['Alex Balakirev', 'alex@projectflow.app', 'Owner', 7, 'Active'], ['Sarah Lee', 'sarah@acme.io', 'Admin', 5, 'Active'], ['John Doe', 'john@acme.io', 'Manager', 6, 'Active'], ['Mia Chen', 'mia@acme.io', 'Member', 4, 'Active'], ['Leo Martin', 'leo@acme.io', 'Member', 0, 'Invited']].forEach(r => rows.insertAdjacentHTML('beforeend', '<tr class="hover:bg-zinc-50"><td class="flex items-center gap-3 py-3">' + av(r[0], 10) + '<div><p class="font-medium">' + r[0] + '</p><p class="text-xs text-slate-500">' + r[1] + '</p></div></td><td>' + chip(r[2], RC[r[2]]) + '</td><td>' + r[3] + '</td><td>' + chip(r[4], r[4] == 'Active' ? '#16a34a' : '#ea580c') + '</td><td class="text-right">' + (r[2] == 'Owner' ? '' : '<button class="text-sm text-red-600 hover:underline">Remove</button>') + '</td></tr>')));
+        </script>
+    </main>
+</body>
+
+</html>
